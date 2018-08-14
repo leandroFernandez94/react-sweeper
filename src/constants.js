@@ -1,4 +1,5 @@
 export const gameStates = {
+  LOADING:"LOADING",
   PLAYING: "PLAYING",
   LOST:"LOST",
   WON:"WON"

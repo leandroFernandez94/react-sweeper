@@ -1,6 +1,7 @@
 import React, {Component} from "react"
 import BoardItem from "./BoardItem"
-import { itemTypes } from "../constants";
+import { itemTypes, gameStates } from "../constants";
+import { GameContext } from "./Game";
 
 /**
  * 
@@ -22,11 +23,11 @@ class Board extends Component {
     const {cols,rows,mines} = this.props
     return Array.from(Array(rows),(_rv,ri) => {
       return Array.from(Array(cols),(_cv,ci) => (
-        <BoardItem 
+        <BoardItem
           col={ci}
           row={ri}
           key={`c${ci}r${ri}`}
-          onClick={this.itemClickCallback}
+          onClick={this.clickBoardItem}
           type={
             mines.find(mine => mine.row === ri && mine.col === ci) ?
               itemTypes.MINE : itemTypes.NUMBER
@@ -37,7 +38,6 @@ class Board extends Component {
   }
 
   render() {
-    
     return(
       <div style={generateStyle(this.props.cols,this.props.rows)}>
         {[].concat(...this.populateBoard())}

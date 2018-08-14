@@ -1,5 +1,6 @@
 import React from "react"
-import { itemTypes } from "../constants";
+import { itemTypes, gameStates } from "../constants";
+import { GameContext } from "./Game";
 
 const style = {
   container: {
@@ -12,14 +13,24 @@ const style = {
 }
 
 const BoardItem = (props) => {
+  const {gameState,minesAroundCount} = props
   const clickItem = () => props.onClick(props.row,props.col)
   
   return (
-    <div style={style.container} onClick={clickItem}>
-      <span>{props.type === itemTypes.MINE && 'X'}</span>
+    <div style={style.container} onClick={gameState === gameStates.PLAYING ? clickItem : null}>
+      {
+      gameState === gameStates.LOADING ?
+      "..." :
+      <span>{props.type === itemTypes.MINE ? 'X' : minesAroundCount(props.row,props.col) }</span>
+      }
     </div>
   )
 }
 
 
-export default BoardItem
+export default props => (
+  <GameContext>
+    {({gameState,minesAroundCount}) => 
+    <BoardItem {...props} gameState={gameState} minesAroundCount={minesAroundCount} />}
+  </GameContext>
+);
